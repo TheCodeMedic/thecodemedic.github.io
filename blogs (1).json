@@ -1,0 +1,18 @@
+{
+  "blogs": [
+    {
+      "id": "test",
+      "title": "test",
+      "content": "he",
+      "tags": [
+        "fortnite",
+        "discord",
+        "noobman"
+      ],
+      "views": 0,
+      "createdAt": "8/6/2025",
+      "updatedAt": "8/6/2025"
+    }
+  ],
+  "lastUpdated": "2025-08-06T20:00:25.957Z"
+}
