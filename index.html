@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeNest - Your Coding Journey Starts Here</title>
@@ -504,24 +502,24 @@
         }
     </style>
 </head>
-<body>
+<body data-new-gr-c-s-check-loaded="14.1247.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1247.0">
     <header>
         <nav class="container">
             <div class="logo">CodeNest</div>
             <div class="nav-right">
                 <ul class="nav-links">
-                    <li><a href="#" onclick="showPage('home')" class="nav-link active">Home</a></li>
-                    <li><a href="#" onclick="showPage('blog')" class="nav-link">Blog</a></li>
+                    <li><a href="#" onclick="showPage('home')" class="nav-link">Home</a></li>
+                    <li><a href="#" onclick="showPage('blog')" class="nav-link active">Blog</a></li>
                     <li><a href="#" onclick="showPage('about')" class="nav-link">About</a></li>
                 </ul>
-                <span class="admin-badge" id="adminBadge" style="display: none;">Admin Mode</span>
+                <span class="admin-badge" id="adminBadge" style="display: inline-block;">Admin Mode</span>
             </div>
         </nav>
     </header>
 
     <main class="container">
         <!-- Home Page -->
-        <div id="home" class="page active">
+        <div id="home" class="page">
             <div class="hero">
                 <h1>Welcome to CodeNest</h1>
                 <p>Your cozy corner of the internet where coding knowledge comes to life. Discover practical tutorials, step-by-step guides, and everything you need to level up your programming skills.</p>
@@ -540,7 +538,7 @@
         </div>
 
         <!-- Blog Page -->
-        <div id="blog" class="page">
+        <div id="blog" class="page active">
             <h1 style="color: white; text-align: center; margin-bottom: 2rem;">Latest Tutorials</h1>
             
             <div class="search-container">
@@ -548,7 +546,7 @@
                 <input type="text" class="search-box" placeholder="Search tutorials..." id="searchBox" oninput="searchBlogs()">
             </div>
 
-            <div id="adminPanel" class="admin-panel" style="display: none;">
+            <div id="adminPanel" class="admin-panel" style="display: block;">
                 <h3>Admin Panel</h3>
                 <div class="admin-controls">
                     <button class="admin-btn" onclick="showAddBlogModal()">
@@ -578,11 +576,30 @@
             </div>
             
             <div id="blogContainer">
-                <div class="no-results">
-                    <i class="fas fa-code"></i>
-                    <h3>No tutorials yet!</h3>
-                    <p>Check back soon for amazing coding tutorials and guides.</p>
-                </div>
+                <article class="blog-post">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> 8/6/2025</span>
+                        <span class="view-count"><i class="fas fa-eye"></i> 0 views</span>
+                    </div>
+                    <h3>test</h3>
+                    <p>he</p>
+                    <div class="blog-tags">
+                        <span class="tag">fortnite</span><span class="tag">discord</span><span class="tag">noobman</span>
+                    </div>
+                    <div class="blog-actions">
+                        <a href="./test.html" class="cta-button" target="_blank">
+                            Read Full Tutorial <i class="fas fa-arrow-right"></i>
+                        </a>
+                        
+                            <button class="admin-btn" onclick="editBlog('test')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="admin-btn danger" onclick="deleteBlog('test')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        
+                    </div>
+                </article>
             </div>
         </div>
 
@@ -609,19 +626,19 @@
     </main>
 
     <!-- Add/Edit Blog Modal -->
-    <div id="blogModal" class="modal">
+    <div id="blogModal" class="modal" style="display: none;"><grammarly-extension data-grammarly-shadow-root="true" style="position: absolute; top: 0px; left: 0px; pointer-events: none; --rem: 16;" class="dnXmp"></grammarly-extension><grammarly-extension data-grammarly-shadow-root="true" style="position: absolute; top: 0px; left: 0px; pointer-events: none; --rem: 16;" class="dnXmp"></grammarly-extension>
         <div class="modal-content">
-            <span class="close" onclick="closeBlogModal()">&times;</span>
+            <span class="close" onclick="closeBlogModal()">×</span>
             <h2 id="modalTitle">Add New Tutorial</h2>
             <form id="blogForm" onsubmit="saveBlog(event)">
                 <div class="form-group">
                     <label for="blogTitle">Tutorial Title</label>
-                    <input type="text" id="blogTitle" required placeholder="e.g., How to Create a Discord Bot">
+                    <input type="text" id="blogTitle" required="" placeholder="e.g., How to Create a Discord Bot">
                 </div>
                 
                 <div class="form-group">
                     <label for="blogContent">Content</label>
-                    <textarea id="blogContent" required placeholder="Write your tutorial content here..."></textarea>
+                    <textarea id="blogContent" required="" placeholder="Write your tutorial content here..." spellcheck="false" aria-label="To enrich screen reader interactions, please activate Accessibility in Grammarly extension settings"></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -634,11 +651,11 @@
                 </button>
             </form>
         </div>
-    </div>
+    <grammarly-extension-vbars data-grammarly-shadow-root="true" class="dnXmp" style="display: contents; --rem: 16;"></grammarly-extension-vbars></div>
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 CodeNest. Built with ❤️ for the coding community.</p>
+            <p>© 2025 CodeNest. Built with ❤️ for the coding community.</p>
         </div>
     </footer>
 
@@ -1209,5 +1226,6 @@
             }
         });
     </script>
-</body>
-</html>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration><grammarly-mirror data-grammarly-shadow-root="true" style="--rem: 16;" class="dnXmp"></grammarly-mirror><grammarly-popups data-grammarly-shadow-root="true" class="dnXmp" style="--rem: 16;"></grammarly-popups><grammarly-extension-vbar-card data-grammarly-shadow-root="true" class="dnXmp" style="--rem: 16;"></grammarly-extension-vbar-card><grammarly-extension-vbars-feedback-form data-grammarly-shadow-root="true" class="dnXmp" style="--rem: 16;"></grammarly-extension-vbars-feedback-form></html>
