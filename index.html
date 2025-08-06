@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeMedic - Diagnosing & Fixing Code Errors</title>
+    <title>CodeNest - Your Coding Journey Starts Here</title>
+    <meta name="description" content="CodeNest - Learn coding through practical tutorials and guides. From Discord bots to web development, we've got you covered.">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,9 +15,9 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-            color: #e4e4e7;
             line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
 
@@ -25,1088 +27,531 @@
             padding: 0 20px;
         }
 
-        /* Header */
         header {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #2d2d3d;
-            padding: 1rem 0;
-            position: sticky;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
 
-        .header-content {
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #10b981, #06d6a0);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+            font-size: 2rem;
             font-weight: bold;
-            color: white;
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(45deg, #10b981, #06d6a0);
+            background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            cursor: pointer;
         }
 
-        .tagline {
-            font-size: 0.9rem;
-            color: #9ca3af;
-            margin-left: 52px;
-            margin-top: -5px;
-        }
-
-        nav ul {
+        .nav-links {
             display: flex;
             list-style: none;
             gap: 2rem;
         }
 
-        nav a {
-            color: #e4e4e7;
+        .nav-links a {
             text-decoration: none;
+            color: #333;
+            font-weight: 500;
             padding: 0.5rem 1rem;
-            border-radius: 6px;
+            border-radius: 25px;
             transition: all 0.3s ease;
-            cursor: pointer;
+            position: relative;
         }
 
-        nav a:hover, nav a.active {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-        }
-
-        /* Admin indicator */
-        .admin-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #ef4444, #dc2626);
+        .nav-links a:hover, .nav-links a.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            transform: translateY(-2px);
+        }
+
+        .admin-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
             font-size: 0.8rem;
-            font-weight: bold;
-            z-index: 1000;
+            margin-left: 1rem;
+        }
+
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 160px);
+        }
+
+        .page {
             display: none;
+            padding: 2rem 0;
         }
 
-        /* Hero Section */
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hero {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 4rem 2rem;
             text-align: center;
-            padding: 4rem 0;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23374151" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .hero h2 {
-            font-size: 3rem;
+        .hero h1 {
+            font-size: 3.5rem;
+            color: white;
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: #9ca3af;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-        }
-
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #10b981;
-            display: block;
-        }
-
-        .stat-label {
-            color: #9ca3af;
-            margin-top: 0.5rem;
-        }
-
-        /* Forum Posts */
-        .forum-section {
-            margin: 4rem 0;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #2d2d3d;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: #ffffff;
-        }
-
-        .post-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .post-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, #10b981, #06d6a0);
-        }
-
-        .post-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .post-title {
             font-size: 1.3rem;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .post-title:hover {
-            color: #10b981;
-        }
-
-        .post-meta {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            font-size: 0.9rem;
-            color: #9ca3af;
-        }
-
-        .post-tag {
-            background: linear-gradient(45deg, #10b981, #06d6a0);
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-container {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .blog-post {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            position: relative;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-left-color: #667eea;
+        }
+
+        .blog-post h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .blog-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
             font-size: 0.8rem;
             font-weight: 500;
         }
 
-        .post-preview {
-            color: #d1d5db;
-            margin: 1rem 0;
-            line-height: 1.7;
+        .view-count {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
         }
 
-        .post-stats {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .admin-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        .post-stat {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #9ca3af;
-            font-size: 0.9rem;
-        }
-
-        .read-more {
-            background: linear-gradient(45deg, #10b981, #06d6a0);
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            margin-right: 1rem;
-        }
-
-        .read-more:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        /* Admin controls */
         .admin-controls {
-            display: none;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .admin-btn {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            border: 1px solid #ef4444;
-            padding: 0.4rem 1rem;
-            border-radius: 6px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 0.8rem;
-            margin-left: 0.5rem;
+            font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .admin-btn:hover {
-            background: #ef4444;
-            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        /* Categories */
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 3rem 0;
-        }
-
-        .category-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .category-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-3px);
-        }
-
-        .category-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .category-name {
-            font-size: 1.1rem;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        .category-count {
-            color: #9ca3af;
-            font-size: 0.9rem;
-        }
-
-        /* Add Post Button */
-        .add-post-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #10b981, #06d6a0);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            display: none;
-        }
-
-        .add-post-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%);
-            margin: 5% auto;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 800px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            color: #ffffff;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: #9ca3af;
-            font-size: 24px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-btn:hover {
-            color: #ef4444;
+        .admin-btn.danger {
+            background: linear-gradient(45deg, #ff6b6b, #ff4757);
         }
 
         .form-group {
             margin-bottom: 1.5rem;
         }
 
-        .form-label {
+        .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #ffffff;
             font-weight: 500;
+            color: #333;
         }
 
-        .form-input, .form-textarea, .form-select {
+        .form-group input, .form-group textarea {
             width: 100%;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            color: #ffffff;
-            font-family: inherit;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
             transition: border-color 0.3s ease;
         }
 
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
+        .form-group input:focus, .form-group textarea:focus {
             outline: none;
-            border-color: #10b981;
+            border-color: #667eea;
         }
 
-        .form-textarea {
-            min-height: 200px;
+        .form-group textarea {
+            height: 200px;
             resize: vertical;
         }
 
-        .tag-input-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center;
-            padding: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            min-height: 45px;
-        }
-
-        .tag-item {
-            background: linear-gradient(45deg, #10b981, #06d6a0);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .tag-remove {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .tag-input {
-            border: none;
-            background: none;
-            color: #ffffff;
-            outline: none;
-            flex: 1;
-            min-width: 100px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #10b981, #06d6a0);
-            color: white;
-            padding: 0.75rem 2rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: #9ca3af;
-            padding: 0.75rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            margin-right: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-
-        /* Post Detail View */
-        .post-detail {
+        .modal {
             display: none;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
             padding: 2rem;
-            margin: 2rem 0;
+            max-width: 600px;
+            margin: 5% auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlide 0.3s ease-out;
         }
 
-        .post-detail-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        @keyframes modalSlide {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .post-detail-title {
+        .close {
+            float: right;
             font-size: 2rem;
-            color: #ffffff;
-            margin-bottom: 1rem;
-        }
-
-        .post-detail-content {
-            color: #d1d5db;
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.05);
-            color: #9ca3af;
-            padding: 0.5rem 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
             cursor: pointer;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
+            color: #999;
+            line-height: 1;
         }
 
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+        .close:hover {
+            color: #333;
         }
 
-        /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid #2d2d3d;
-            padding: 3rem 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
             margin-top: 4rem;
         }
 
-        .footer-content {
+        .no-results {
             text-align: center;
-            color: #9ca3af;
+            padding: 3rem;
+            color: #666;
         }
 
-        /* Responsive */
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
+            .nav-links {
                 gap: 1rem;
             }
-
-            .hero h2 {
-                font-size: 2rem;
+            
+            .hero h1 {
+                font-size: 2.5rem;
             }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
+            
+            .admin-controls {
+                flex-wrap: wrap;
             }
-
-            .post-header {
+            
+            .blog-meta {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
+                gap: 0.5rem;
             }
-
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .modal-content {
-                margin: 10% auto;
-                width: 95%;
-                padding: 1rem;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .post-card {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .post-card:nth-child(2) { animation-delay: 0.1s; }
-        .post-card:nth-child(3) { animation-delay: 0.2s; }
-        .post-card:nth-child(4) { animation-delay: 0.3s; }
-
-        /* Hidden sections */
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="admin-indicator" id="adminIndicator">
-        🔧 ADMIN MODE
-    </div>
-
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div>
-                    <div class="logo">
-                        <div class="logo-icon">CM</div>
-                        <h1 onclick="showSection('home')">CodeMedic</h1>
-                    </div>
-                    <div class="tagline">Diagnosing & Fixing Code Errors</div>
-                </div>
-                <nav>
-                    <ul>
-                        <li><a onclick="showSection('home')" class="nav-link active">Home</a></li>
-                        <li><a onclick="showSection('posts')" class="nav-link">Posts</a></li>
-                        <li><a onclick="showSection('categories')" class="nav-link">Categories</a></li>
-                        <li><a onclick="showSection('about')" class="nav-link">About</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+        <nav class="container">
+            <div class="logo">CodeNest</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')" class="nav-link active">Home</a></li>
+                <li><a href="#" onclick="showPage('blog')" class="nav-link">Blog</a></li>
+                <li><a href="#" onclick="showPage('about')" class="nav-link">About</a></li>
+                <span class="admin-badge" id="adminBadge" style="display: none;">Admin Mode</span>
+            </ul>
+        </nav>
     </header>
 
-    <main>
-        <!-- Home Section -->
-        <section id="home" class="section active">
+    <main class="container">
+        <!-- Home Page -->
+        <div id="home" class="page active">
             <div class="hero">
-                <div class="container">
-                    <h2>Your Code's Personal Physician</h2>
-                    <p>Expert diagnosis and treatment for all your programming ailments. From syntax errors to logic bugs, get the cure you need.</p>
-                    
-                    <div class="stats">
-                        <div class="stat-card">
-                            <span class="stat-number" data-target="127">0</span>
-                            <div class="stat-label">Error Types Covered</div>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number" data-target="12">0</span>
-                            <div class="stat-label">Programming Languages</div>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number" data-target="1542">0</span>
-                            <div class="stat-label">Bugs Fixed</div>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number" data-target="98">0</span>
-                            <div class="stat-label">Success Rate</div>
-                        </div>
-                    </div>
-                </div>
+                <h1>Welcome to CodeNest</h1>
+                <p>Your cozy corner of the internet where coding knowledge comes to life. Discover practical tutorials, step-by-step guides, and everything you need to level up your programming skills.</p>
+                <a href="#" onclick="showPage('blog')" class="cta-button">Explore Tutorials</a>
+            </div>
+            
+            <div class="card">
+                <h2>🚀 What You'll Find Here</h2>
+                <p>At CodeNest, we believe learning to code should be approachable and fun. Whether you're building your first Discord bot, diving into web development, or exploring new frameworks, we've got detailed guides to help you succeed.</p>
+            </div>
+            
+            <div class="card">
+                <h2>💡 Learn by Doing</h2>
+                <p>Every tutorial is designed with hands-on learning in mind. Follow along with real examples, practical code snippets, and clear explanations that make complex concepts simple to understand.</p>
+            </div>
+        </div>
+
+        <!-- Blog Page -->
+        <div id="blog" class="page">
+            <h1 style="color: white; text-align: center; margin-bottom: 2rem;">Latest Tutorials</h1>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" placeholder="Search tutorials..." id="searchBox" oninput="searchBlogs()">
             </div>
 
-            <div class="forum-section">
-                <div class="container">
-                    <div class="section-header">
-                        <h3 class="section-title">Latest Diagnoses</h3>
-                    </div>
-                    <div id="recentPosts"></div>
+            <div id="adminPanel" class="admin-panel" style="display: none;">
+                <h3>Admin Panel</h3>
+                <div class="admin-controls">
+                    <button class="admin-btn" onclick="showAddBlogModal()">
+                        <i class="fas fa-plus"></i> Add New Post
+                    </button>
+                    <button class="admin-btn danger" onclick="confirmClearAll()">
+                        <i class="fas fa-trash"></i> Clear All Posts
+                    </button>
                 </div>
             </div>
-        </section>
-
-        <!-- Posts Section -->
-        <section id="posts" class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h3 class="section-title">All Posts</h3>
-                </div>
-                <div id="allPosts"></div>
-            </div>
-        </section>
-
-        <!-- Categories Section -->
-        <section id="categories" class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h3 class="section-title">Error Categories</h3>
-                </div>
-
-                <div class="categories" id="categoriesGrid"></div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h3 class="section-title">About CodeMedic</h3>
-                </div>
-                <div class="post-card">
-                    <h4 class="post-title">Welcome to CodeMedic</h4>
-                    <div class="post-preview">
-                        CodeMedic is your go-to resource for diagnosing and fixing code errors across multiple programming languages. 
-                        Whether you're dealing with syntax errors, runtime exceptions, or logical bugs, our comprehensive guides 
-                        provide step-by-step solutions to get your code back to health.
-                        <br><br>
-                        Our mission is to help developers at all levels understand common programming errors, learn debugging 
-                        techniques, and build more robust applications. Each post includes detailed explanations, code examples, 
-                        and best practices to prevent similar issues in the future.
-                    </div>
+            
+            <div id="blogContainer">
+                <div class="no-results">
+                    <i class="fas fa-code"></i>
+                    <h3>No tutorials yet!</h3>
+                    <p>Check back soon for amazing coding tutorials and guides.</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Post Detail View -->
-        <div id="postDetail" class="post-detail">
-            <div class="container">
-                <button class="back-btn" onclick="closePostDetail()">← Back to Posts</button>
-                <div class="post-detail-header">
-                    <h1 class="post-detail-title" id="detailTitle"></h1>
-                    <div class="post-meta" id="detailMeta"></div>
-                </div>
-                <div class="post-detail-content" id="detailContent"></div>
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="card">
+                <h1>About CodeNest</h1>
+                <p>CodeNest was born from a simple idea: coding education should be accessible, practical, and enjoyable for everyone. Whether you're taking your first steps in programming or you're looking to expand your skillset, we're here to guide you through your journey.</p>
+                
+                <h2 style="margin-top: 2rem;">Our Mission</h2>
+                <p>We create comprehensive, easy-to-follow tutorials that bridge the gap between theory and practice. Every guide is crafted with care, tested thoroughly, and designed to help you build real projects while learning fundamental concepts.</p>
+                
+                <h2 style="margin-top: 2rem;">What Makes Us Different</h2>
+                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                    <li>Step-by-step tutorials with real-world applications</li>
+                    <li>Clear explanations without overwhelming jargon</li>
+                    <li>Code examples you can actually use in your projects</li>
+                    <li>Regular updates with the latest best practices</li>
+                </ul>
+                
+                <p>Join our growing community of learners and let's build something amazing together!</p>
             </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 CodeMedic. Healing code, one error at a time.</p>
-                <p>Built with ❤️ for the developer community</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Add Post Button (Admin Only) -->
-    <button class="add-post-btn" id="addPostBtn" onclick="openAddPostModal()">+</button>
-
-    <!-- Add/Edit Post Modal -->
-    <div id="postModal" class="modal">
+    <!-- Add/Edit Blog Modal -->
+    <div id="blogModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Add New Post</h2>
-                <button class="close-btn" onclick="closePostModal()">&times;</button>
-            </div>
-            <form id="postForm">
+            <span class="close" onclick="closeBlogModal()">&times;</span>
+            <h2 id="modalTitle">Add New Tutorial</h2>
+            <form id="blogForm" onsubmit="saveBlog(event)">
                 <div class="form-group">
-                    <label class="form-label">Title</label>
-                    <input type="text" id="postTitle" class="form-input" placeholder="Enter post title..." required>
+                    <label for="blogTitle">Tutorial Title</label>
+                    <input type="text" id="blogTitle" required placeholder="e.g., How to Create a Discord Bot">
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label">Category</label>
-                    <select id="postCategory" class="form-select" required>
-                        <option value="">Select category...</option>
-                        <option value="Syntax Errors">🔥 Syntax Errors</option>
-                        <option value="Runtime Errors">💥 Runtime Errors</option>
-                        <option value="Logic Errors">🧠 Logic Errors</option>
-                        <option value="Performance Issues">🚀 Performance Issues</option>
-                        <option value="Security Vulnerabilities">🔒 Security Vulnerabilities</option>
-                        <option value="API & Network Errors">🌐 API & Network Errors</option>
-                    </select>
+                    <label for="blogContent">Content</label>
+                    <textarea id="blogContent" required placeholder="Write your tutorial content here..."></textarea>
                 </div>
+                
                 <div class="form-group">
-                    <label class="form-label">Tags</label>
-                    <div class="tag-input-container" id="tagContainer">
-                        <input type="text" class="tag-input" id="tagInput" placeholder="Add tags...">
-                    </div>
+                    <label for="blogTags">Tags (comma-separated)</label>
+                    <input type="text" id="blogTags" placeholder="e.g., discord, javascript, bot, api">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Preview/Summary</label>
-                    <textarea id="postPreview" class="form-textarea" placeholder="Enter a brief summary or preview..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Full Content</label>
-                    <textarea id="postContent" class="form-textarea" placeholder="Enter the full post content..." required style="min-height: 300px;"></textarea>
-                </div>
-                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
-                    <button type="button" class="btn-secondary" onclick="closePostModal()">Cancel</button>
-                    <button type="submit" class="btn-primary" id="submitBtn">Publish Post</button>
-                </div>
+                
+                <button type="submit" class="admin-btn">
+                    <i class="fas fa-save"></i> Save Tutorial
+                </button>
             </form>
         </div>
     </div>
 
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CodeNest. Built with ❤️ for the coding community.</p>
+        </div>
+    </footer>
+
     <script>
-        // Global state
-        let posts = [
-            {
-                id: 1,
-                title: "🔧 Fixing the Dreaded \"Cannot read property of undefined\" Error",
-                category: "Runtime Errors",
-                tags: ["JavaScript", "TypeError"],
-                preview: "One of the most common JavaScript errors that haunts developers. Learn the root causes, prevention strategies, and multiple solutions including optional chaining, defensive programming, and proper error handling...",
-                content: `# Fixing the Dreaded "Cannot read property of undefined" Error
+        let blogs = [];
+        let editingBlogId = null;
+        let isAdminMode = false;
 
-This is one of the most frustrating errors in JavaScript development. Let's break down why it happens and how to fix it.
-
-## What Causes This Error?
-
-The error occurs when you try to access a property on a value that is \`undefined\`. Common scenarios:
-
-1. **Accessing nested object properties**
-2. **Working with API responses**
-3. **Array element access**
-4. **Function return values**
-
-## Prevention Strategies
-
-### 1. Optional Chaining (?.)
-\`\`\`javascript
-// Instead of this:
-if (user && user.profile && user.profile.name) {
-    console.log(user.profile.name);
-}
-
-// Use this:
-console.log(user?.profile?.name);
-\`\`\`
-
-### 2. Defensive Programming
-Always check for existence before accessing properties.
-
-### 3. Default Values
-Use default parameters and destructuring defaults.
-
-This comprehensive approach will help you avoid this common error pattern.`,
-                date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-                views: 1234,
-                discussions: 23,
-                helpful: 89
-            },
-            {
-                id: 2,
-                title: "🐍 Python IndentationError: The Silent Code Killer",
-                category: "Syntax Errors",
-                tags: ["Python", "SyntaxError"],
-                preview: "Indentation errors in Python can be frustrating and hard to spot. This comprehensive guide covers mixed tabs and spaces, IDE configuration, and debugging techniques to eliminate indentation issues forever...",
-                content: `# Python IndentationError: The Silent Code Killer
-
-Python's reliance on indentation for code structure makes IndentationError one of the most common issues for new and experienced developers alike.
-
-## Common Causes
-
-1. **Mixed tabs and spaces**
-2. **Inconsistent indentation levels**
-3. **Copy-paste from different sources**
-4. **IDE configuration issues**
-
-## Solutions
-
-### Configure Your IDE
-- Set visible whitespace
-- Use consistent tab/space settings
-- Enable indentation guides
-
-### Python Tools
-Use tools like \`autopep8\` and \`black\` for automatic formatting.
-
-### Best Practices
-- Choose spaces OR tabs, not both
-- Use 4 spaces for indentation (PEP 8 standard)
-- Configure your editor to show whitespace characters
-
-Following these guidelines will eliminate most indentation errors.`,
-                date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-                views: 987,
-                discussions: 15,
-                helpful: 67
-            },
-            {
-                id: 3,
-                title: "⚛️ React Hook Dependency Array: Missing Dependencies Explained",
-                category: "Logic Errors",
-                tags: ["React", "Hooks"],
-                preview: "ESLint warnings about missing dependencies in useEffect can be confusing. Learn why they happen, how to fix them properly, and when it's safe to ignore the warning (spoiler: almost never)...",
-                content: `# React Hook Dependency Array: Missing Dependencies Explained
-
-The ESLint rule \`exhaustive-deps\` often confuses developers, but it's there for good reasons.
-
-## Why Dependencies Matter
-
-useEffect runs when dependencies change. Missing dependencies can cause:
-- Stale closures
-- Infinite loops
-- Unexpected behavior
-
-## Common Scenarios
-
-### 1. State Variables
-\`\`\`javascript
-function Component() {
-    const [count, setCount] = useState(0);
-    
-    useEffect(() => {
-        // count is used but not in dependencies
-        console.log(count);
-    }, []); // Missing dependency: count
-}
-\`\`\`
-
-### 2. Props
-\`\`\`javascript
-function Component({ userId }) {
-    useEffect(() => {
-        fetchUser(userId);
-    }, []); // Missing dependency: userId
-}
-\`\`\`
-
-## Solutions
-
-1. **Add the dependency**
-2. **Use useCallback for functions**
-3. **Move functions inside useEffect**
-4. **Use functional updates for setState**
-
-Understanding these patterns will make your React code more reliable.`,
-                date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-                views: 756,
-                discussions: 31,
-                helpful: 92
-            }
-        ];
-
-        let categories = {
-            "Syntax Errors": { icon: "🔥", count: 0 },
-            "Runtime Errors": { icon: "💥", count: 0 },
-            "Logic Errors": { icon: "🧠", count: 0 },
-            "Performance Issues": { icon: "🚀", count: 0 },
-            "Security Vulnerabilities": { icon: "🔒", count: 0 },
-            "API & Network Errors": { icon: "🌐", count: 0 }
-        };
-
-        let isAdmin = false;
-        let editingPostId = null;
-
-        // Initialize app
-        function init() {
+        // Check for admin mode on load
+        window.addEventListener('DOMContentLoaded', function() {
             checkAdminMode();
-            updateStats();
-            renderPosts();
-            renderCategories();
-            setupEventListeners();
-            animateStats();
-        }
+            loadBlogs();
+            generateSEOFiles();
+        });
 
-        // Check if in admin mode
+        // Check URL parameters for admin mode
         function checkAdminMode() {
             const urlParams = new URLSearchParams(window.location.search);
-            isAdmin = urlParams.get('admin') === 'true' || window.location.hash === '#admin';
+            isAdminMode = urlParams.has('admin');
             
-            if (isAdmin) {
-                document.getElementById('adminIndicator').style.display = 'block';
-                document.getElementById('addPostBtn').style.display = 'block';
-                document.querySelectorAll('.admin-controls').forEach(el => el.style.display = 'inline-block');
+            const adminBadge = document.getElementById('adminBadge');
+            const adminPanel = document.getElementById('adminPanel');
+            
+            if (isAdminMode) {
+                adminBadge.style.display = 'inline-block';
+                adminPanel.style.display = 'block';
+            } else {
+                adminBadge.style.display = 'none';
+                adminPanel.style.display = 'none';
             }
         }
 
-        // Update statistics
-        function updateStats() {
-            // Update category counts
-            Object.keys(categories).forEach(cat => categories[cat].count = 0);
-            posts.forEach(post => {
-                if (categories[post.category]) {
-                    categories[post.category].count++;
-                }
-            });
-
-            // Update stats display
-            const statNumbers = document.querySelectorAll('.stat-number');
-            if (statNumbers.length > 0) {
-                statNumbers[0].dataset.target = Object.values(categories).reduce((sum, cat) => sum + cat.count, 0);
-                statNumbers[1].dataset.target = new Set(posts.flatMap(p => p.tags)).size;
-                statNumbers[2].dataset.target = posts.reduce((sum, p) => sum + p.views, 0);
-                statNumbers[3].dataset.target = 98;
-            }
-        }
-
-        // Render posts
-        function renderPosts() {
-            renderRecentPosts();
-            renderAllPosts();
-        }
-
-        function renderRecentPosts() {
-            const container = document.getElementById('recentPosts');
-            const recentPosts = posts.slice(0, 3);
-            container.innerHTML = recentPosts.map(post => createPostCard(post)).join('');
-        }
-
-        function renderAllPosts() {
-            const container = document.getElementById('allPosts');
-            container.innerHTML = posts.map(post => createPostCard(post)).join('');
-        }
-
-        function createPostCard(post) {
-            const adminControls = isAdmin ? `
-                <div class="admin-controls" style="display: inline-block;">
-                    <button class="admin-btn" onclick="editPost(${post.id})">Edit</button>
-                    <button class="admin-btn" onclick="deletePost(${post.id})">Delete</button>
-                </div>
-            ` : '';
-
-            return `
-                <div class="post-card">
-                    <div class="post-header">
-                        <div>
-                            <h4 class="post-title" onclick="openPost(${post.id})">${post.title}</h4>
-                            <div class="post-meta">
-                                <span>📅 ${formatDate(post.date)}</span>
-                                <span class="post-tag">${post.category}</span>
-                                ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
-                            </div>
-                        </div>
-                        ${adminControls}
-                    </div>
-                    <div class="post-preview">${post.preview}</div>
-                    <div class="post-stats">
-                        <div class="post-stat">
-                            <span>👀</span>
-                            <span>${post.views.toLocaleString()} views</span>
-                        </div>
-                        <div class="post-stat">
-                            <span>💬</span>
-                            <span>${post.discussions} discussions</span>
-                        </div>
-                        <div class="post-stat">
-                            <span>⭐</span>
-                            <span>${post.helpful} helpful</span>
-                        </div>
-                    </div>
-                    <button class="read-more" onclick="openPost(${post.id})">Read Full Diagnosis</button>
-                </div>
-            `;
-        }
-
-        // Render categories
-        function renderCategories() {
-            const container = document.getElementById('categoriesGrid');
-            container.innerHTML = Object.entries(categories).map(([name, data]) => `
-                <div class="category-card" onclick="filterByCategory('${name}')">
-                    <div class="category-icon">${data.icon}</div>
-                    <div class="category-name">${name}</div>
-                    <div class="category-count">${data.count} posts</div>
-                </div>
-            `).join('');
-        }
-
-        // Navigation
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
+        // Navigation functions
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
             });
             
-            // Hide post detail
-            document.getElementById('postDetail').style.display = 'none';
-            
-            // Show target section
-            document.getElementById(sectionId).classList.add('active');
+            // Show selected page
+            document.getElementById(pageName).classList.add('active');
             
             // Update navigation
             document.querySelectorAll('.nav-link').forEach(link => {
@@ -1115,251 +560,229 @@ Understanding these patterns will make your React code more reliable.`,
             event.target.classList.add('active');
         }
 
-        // Post management
-        function openPost(postId) {
-            const post = posts.find(p => p.id === postId);
-            if (!post) return;
+        // Blog management functions
+        function loadBlogs() {
+            const stored = localStorage.getItem('codeNestBlogs');
+            if (stored) {
+                blogs = JSON.parse(stored);
+            }
+            renderBlogs();
+        }
 
-            // Increment view count
-            post.views++;
-            updateStats();
-            renderPosts();
+        function saveBlogs() {
+            localStorage.setItem('codeNestBlogs', JSON.stringify(blogs));
+            generateSEOFiles();
+        }
 
-            // Show post detail
-            document.getElementById('detailTitle').textContent = post.title;
-            document.getElementById('detailMeta').innerHTML = `
-                <span>📅 ${formatDate(post.date)}</span>
-                <span class="post-tag">${post.category}</span>
-                ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
-            `;
-            document.getElementById('detailContent').innerHTML = formatContent(post.content);
+        function renderBlogs(blogsToRender = blogs) {
+            const container = document.getElementById('blogContainer');
+            
+            if (blogsToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No tutorials found</h3>
+                        <p>Try adjusting your search terms or browse all tutorials.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = blogsToRender.map(blog => `
+                <article class="blog-post">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> ${blog.createdAt}</span>
+                        <span class="view-count"><i class="fas fa-eye"></i> ${blog.views} views</span>
+                    </div>
+                    <h3>${blog.title}</h3>
+                    <p>${blog.content.substring(0, 200)}${blog.content.length > 200 ? '...' : ''}</p>
+                    <div class="blog-tags">
+                        ${blog.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    ${isAdminMode ? `
+                        <div style="margin-top: 1rem;">
+                            <button class="admin-btn" onclick="editBlog('${blog.id}')" style="margin-right: 0.5rem;">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="admin-btn danger" onclick="deleteBlog('${blog.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    ` : `
+                        <button class="cta-button" onclick="viewBlog('${blog.id}')" style="margin-top: 1rem;">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </button>
+                    `}
+                </article>
+            `).join('');
+        }
 
-            // Hide all sections and show post detail
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
+        function searchBlogs() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            
+            if (!searchTerm.trim()) {
+                renderBlogs();
+                return;
+            }
+            
+            const filtered = blogs.filter(blog => {
+                const titleMatch = blog.title.toLowerCase().includes(searchTerm);
+                const contentMatch = blog.content.toLowerCase().includes(searchTerm);
+                const tagMatch = blog.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+                
+                // Advanced search scoring
+                let score = 0;
+                if (titleMatch) score += 3;
+                if (contentMatch) score += 1;
+                if (tagMatch) score += 2;
+                
+                return score > 0;
             });
-            document.getElementById('postDetail').style.display = 'block';
+            
+            renderBlogs(filtered);
         }
 
-        function closePostDetail() {
-            document.getElementById('postDetail').style.display = 'none';
-            document.getElementById('home').classList.add('active');
+        function showAddBlogModal() {
+            editingBlogId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Tutorial';
+            document.getElementById('blogForm').reset();
+            document.getElementById('blogModal').style.display = 'block';
         }
 
-        function formatContent(content) {
-            // Simple markdown-like formatting
-            return content
-                .replace(/^# (.+)/gm, '<h1>$1</h1>')
-                .replace(/^## (.+)/gm, '<h2>$1</h2>')
-                .replace(/^### (.+)/gm, '<h3>$1</h3>')
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                .replace(/`(.+?)`/g, '<code>$1</code>')
-                .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/^(.+)$/gm, '<p>$1</p>')
-                .replace(/<p><\/p>/g, '')
-                .replace(/<p><h/g, '<h')
-                .replace(/<\/h([1-6])><\/p>/g, '</h$1>');
+        function editBlog(id) {
+            const blog = blogs.find(b => b.id === id);
+            if (!blog) return;
+            
+            editingBlogId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Tutorial';
+            document.getElementById('blogTitle').value = blog.title;
+            document.getElementById('blogContent').value = blog.content;
+            document.getElementById('blogTags').value = blog.tags.join(', ');
+            document.getElementById('blogModal').style.display = 'block';
         }
 
-        // Admin functions
-        function openAddPostModal() {
-            if (!isAdmin) return;
+        function saveBlog(event) {
+            event.preventDefault();
             
-            editingPostId = null;
-            document.getElementById('modalTitle').textContent = 'Add New Post';
-            document.getElementById('submitBtn').textContent = 'Publish Post';
-            document.getElementById('postForm').reset();
-            clearTags();
-            document.getElementById('postModal').style.display = 'block';
+            const title = document.getElementById('blogTitle').value;
+            const content = document.getElementById('blogContent').value;
+            const tags = document.getElementById('blogTags').value
+                .split(',')
+                .map(tag => tag.trim())
+                .filter(tag => tag);
+            
+            if (editingBlogId) {
+                // Update existing blog
+                const blogIndex = blogs.findIndex(b => b.id === editingBlogId);
+                blogs[blogIndex] = {
+                    ...blogs[blogIndex],
+                    title,
+                    content,
+                    tags,
+                    updatedAt: new Date().toLocaleDateString()
+                };
+            } else {
+                // Create new blog
+                const newBlog = {
+                    id: 'blog_' + Date.now(),
+                    title,
+                    content,
+                    tags,
+                    views: 0,
+                    createdAt: new Date().toLocaleDateString(),
+                    updatedAt: new Date().toLocaleDateString()
+                };
+                blogs.unshift(newBlog);
+            }
+            
+            saveBlogs();
+            renderBlogs();
+            closeBlogModal();
         }
 
-        function editPost(postId) {
-            if (!isAdmin) return;
-            
-            const post = posts.find(p => p.id === postId);
-            if (!post) return;
-
-            editingPostId = postId;
-            document.getElementById('modalTitle').textContent = 'Edit Post';
-            document.getElementById('submitBtn').textContent = 'Update Post';
-            
-            document.getElementById('postTitle').value = post.title;
-            document.getElementById('postCategory').value = post.category;
-            document.getElementById('postPreview').value = post.preview;
-            document.getElementById('postContent').value = post.content;
-            
-            // Set tags
-            clearTags();
-            post.tags.forEach(tag => addTag(tag));
-            
-            document.getElementById('postModal').style.display = 'block';
-        }
-
-        function deletePost(postId) {
-            if (!isAdmin) return;
-            
-            if (confirm('Are you sure you want to delete this post?')) {
-                posts = posts.filter(p => p.id !== postId);
-                updateStats();
-                renderPosts();
-                renderCategories();
+        function deleteBlog(id) {
+            if (confirm('Are you sure you want to delete this tutorial?')) {
+                blogs = blogs.filter(b => b.id !== id);
+                saveBlogs();
+                renderBlogs();
             }
         }
 
-        function closePostModal() {
-            document.getElementById('postModal').style.display = 'none';
-            editingPostId = null;
+        function viewBlog(id) {
+            const blog = blogs.find(b => b.id === id);
+            if (!blog) return;
+            
+            // Increment view count
+            blog.views++;
+            saveBlogs();
+            renderBlogs();
+            
+            // Here you would typically navigate to a separate blog page
+            // For demo purposes, we'll show an alert
+            alert(`You would now be viewing: "${blog.title}"\n\nIn a real implementation, this would navigate to a separate HTML file for SEO purposes.`);
         }
 
-        // Tag management
-        function setupTagInput() {
-            const tagInput = document.getElementById('tagInput');
-            tagInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ',') {
-                    e.preventDefault();
-                    const tag = this.value.trim();
-                    if (tag) {
-                        addTag(tag);
-                        this.value = '';
-                    }
-                }
+        function confirmClearAll() {
+            if (confirm('Are you sure you want to delete ALL tutorials? This action cannot be undone.')) {
+                blogs = [];
+                saveBlogs();
+                renderBlogs();
+            }
+        }
+
+        function closeBlogModal() {
+            document.getElementById('blogModal').style.display = 'none';
+            editingBlogId = null;
+        }
+
+        // SEO file generation (simulated)
+        function generateSEOFiles() {
+            // In a real implementation, this would generate actual HTML files
+            // For demo purposes, we'll simulate this functionality
+            blogs.forEach(blog => {
+                const fileName = blog.title.toLowerCase()
+                    .replace(/[^a-z0-9\s]/g, '')
+                    .replace(/\s+/g, '-') + '.html';
+                    
+                console.log(`Generated SEO file: ${fileName} for blog: ${blog.title}`);
+                
+                // This would create individual HTML files with proper meta tags
+                // and structured data for search engine optimization
             });
         }
 
-        function addTag(tagText) {
-            const container = document.getElementById('tagContainer');
-            const tagInput = document.getElementById('tagInput');
-            
-            // Check if tag already exists
-            const existingTags = Array.from(container.querySelectorAll('.tag-item')).map(t => t.textContent.replace('×', '').trim());
-            if (existingTags.includes(tagText)) return;
-            
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag-item';
-            tagElement.innerHTML = `
-                ${tagText}
-                <button type="button" class="tag-remove" onclick="removeTag(this)">×</button>
-            `;
-            
-            container.insertBefore(tagElement, tagInput);
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('blogModal');
+            if (event.target === modal) {
+                closeBlogModal();
+            }
         }
 
-        function removeTag(button) {
-            button.parentElement.remove();
-        }
-
-        function clearTags() {
-            const container = document.getElementById('tagContainer');
-            const tagInput = document.getElementById('tagInput');
-            container.querySelectorAll('.tag-item').forEach(tag => tag.remove());
-        }
-
-        function getTags() {
-            const container = document.getElementById('tagContainer');
-            return Array.from(container.querySelectorAll('.tag-item')).map(tag => 
-                tag.textContent.replace('×', '').trim()
-            );
-        }
-
-        // Form handling
-        function setupEventListeners() {
-            setupTagInput();
-            
-            document.getElementById('postForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const title = document.getElementById('postTitle').value.trim();
-                const category = document.getElementById('postCategory').value;
-                const preview = document.getElementById('postPreview').value.trim();
-                const content = document.getElementById('postContent').value.trim();
-                const tags = getTags();
-                
-                if (!title || !category || !preview || !content) {
-                    alert('Please fill in all required fields.');
-                    return;
+        // Sample data for demonstration (remove in production)
+        if (blogs.length === 0 && isAdminMode) {
+            blogs = [
+                {
+                    id: 'blog_sample_1',
+                    title: 'How to Create Your First Discord Bot',
+                    content: 'Discord bots are powerful tools that can automate tasks, moderate servers, and provide entertainment. In this comprehensive guide, we\'ll walk through creating your first Discord bot using JavaScript and the Discord.js library. We\'ll cover everything from setting up your development environment to deploying your bot to a server.',
+                    tags: ['discord', 'javascript', 'bot', 'api'],
+                    views: 847,
+                    createdAt: '1/15/2025',
+                    updatedAt: '1/15/2025'
+                },
+                {
+                    id: 'blog_sample_2',
+                    title: 'Building a REST API with Node.js and Express',
+                    content: 'Learn how to build a robust REST API using Node.js and Express.js. This tutorial covers routing, middleware, error handling, and database integration. Perfect for beginners who want to understand backend development fundamentals.',
+                    tags: ['nodejs', 'express', 'api', 'backend'],
+                    views: 623,
+                    createdAt: '1/12/2025',
+                    updatedAt: '1/12/2025'
                 }
-                
-                const postData = {
-                    title,
-                    category,
-                    tags,
-                    preview,
-                    content,
-                    date: new Date(),
-                    views: 0,
-                    discussions: 0,
-                    helpful: 0
-                };
-                
-                if (editingPostId) {
-                    // Update existing post
-                    const postIndex = posts.findIndex(p => p.id === editingPostId);
-                    if (postIndex !== -1) {
-                        posts[postIndex] = { ...posts[postIndex], ...postData };
-                    }
-                } else {
-                    // Add new post
-                    postData.id = Math.max(...posts.map(p => p.id), 0) + 1;
-                    posts.unshift(postData);
-                }
-                
-                updateStats();
-                renderPosts();
-                renderCategories();
-                closePostModal();
-            });
-            
-            // Close modal when clicking outside
-            document.getElementById('postModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closePostModal();
-                }
-            });
+            ];
+            saveBlogs();
         }
-
-        // Utility functions
-        function formatDate(date) {
-            const now = new Date();
-            const diffTime = Math.abs(now - date);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) return 'Today';
-            if (diffDays === 1) return '1 day ago';
-            if (diffDays < 7) return `${diffDays} days ago`;
-            if (diffDays < 30) return `${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? 's' : ''} ago`;
-            return date.toLocaleDateString();
-        }
-
-        function filterByCategory(categoryName) {
-            const filteredPosts = posts.filter(post => post.category === categoryName);
-            document.getElementById('allPosts').innerHTML = filteredPosts.map(post => createPostCard(post)).join('');
-            showSection('posts');
-        }
-
-        function animateStats() {
-            const statNumbers = document.querySelectorAll('.stat-number');
-            statNumbers.forEach((stat, index) => {
-                const target = parseInt(stat.dataset.target) || 0;
-                let current = 0;
-                const increment = target / 50;
-                const isPercentage = stat.textContent.includes('%');
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        stat.textContent = isPercentage ? target + '%' : target.toLocaleString();
-                        clearInterval(timer);
-                    } else {
-                        stat.textContent = isPercentage ? Math.floor(current) + '%' : Math.floor(current).toLocaleString();
-                    }
-                }, 20);
-            });
-        }
-
-        // Initialize the application
-        init();
     </script>
 </body>
 </html>
