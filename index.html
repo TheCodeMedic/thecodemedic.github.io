@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeNest2 - Your Coding Journey Starts Here</title>
+    <title>CodeNest - Your Coding Journey Starts Here</title>
     <meta name="description" content="CodeNest - Learn coding through practical tutorials and guides. From Discord bots to web development, we've got you covered.">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -647,6 +647,7 @@
         let editingBlogId = null;
         let isAdminMode = false;
         let currentView = 'home';
+        let generatedFiles = [];
 
         // Initialize the application
         window.addEventListener('DOMContentLoaded', function() {
@@ -706,7 +707,10 @@
             });
             
             // Show selected page
-            document.getElementById(pageName).classList.add('active');
+            const targetPage = document.getElementById(pageName);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
             
             // Update navigation
             document.querySelectorAll('.nav-link').forEach(link => {
@@ -733,7 +737,8 @@
                 .replace(/[^a-z0-9\s]/g, '')
                 .replace(/\s+/g, '-')
                 .replace(/-+/g, '-')
-                .trim('-');
+                .trim()
+                .replace(/^-+|-+$/g, ''); // Remove leading/trailing dashes
         }
 
         function renderBlogs(blogsToRender = blogs) {
@@ -756,10 +761,10 @@
                         <span><i class="fas fa-calendar"></i> ${blog.createdAt}</span>
                         <span class="view-count"><i class="fas fa-eye"></i> ${blog.views} views</span>
                     </div>
-                    <h3>${blog.title}</h3>
-                    <p>${blog.content.substring(0, 200)}${blog.content.length > 200 ? '...' : ''}</p>
+                    <h3>${escapeHtml(blog.title)}</h3>
+                    <p>${escapeHtml(blog.content.substring(0, 200))}${blog.content.length > 200 ? '...' : ''}</p>
                     <div class="blog-tags">
-                        ${blog.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        ${blog.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
                     </div>
                     <div class="blog-actions">
                         <a href="./${blog.id}.html" class="cta-button" target="_blank">
@@ -776,6 +781,17 @@
                     </div>
                 </article>
             `).join('');
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
         function searchBlogs() {
@@ -813,7 +829,10 @@
 
         function editBlog(id) {
             const blog = blogs.find(b => b.id === id);
-            if (!blog) return;
+            if (!blog) {
+                console.error('Blog not found:', id);
+                return;
+            }
             
             editingBlogId = id;
             document.getElementById('modalTitle').textContent = 'Edit Tutorial';
@@ -826,49 +845,54 @@
         function saveBlog(event) {
             event.preventDefault();
             
-            const title = document.getElementById('blogTitle').value.trim();
-            const content = document.getElementById('blogContent').value.trim();
-            const tags = document.getElementById('blogTags').value
-                .split(',')
-                .map(tag => tag.trim())
-                .filter(tag => tag);
-            
-            if (!title || !content) {
-                alert('Please fill in both title and content.');
-                return;
-            }
-            
-            if (editingBlogId) {
-                // Update existing blog
-                const blogIndex = blogs.findIndex(b => b.id === editingBlogId);
-                if (blogIndex !== -1) {
-                    blogs[blogIndex] = {
-                        ...blogs[blogIndex],
+            try {
+                const title = document.getElementById('blogTitle').value.trim();
+                const content = document.getElementById('blogContent').value.trim();
+                const tags = document.getElementById('blogTags').value
+                    .split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag);
+                
+                if (!title || !content) {
+                    alert('Please fill in both title and content.');
+                    return;
+                }
+                
+                if (editingBlogId) {
+                    // Update existing blog
+                    const blogIndex = blogs.findIndex(b => b.id === editingBlogId);
+                    if (blogIndex !== -1) {
+                        blogs[blogIndex] = {
+                            ...blogs[blogIndex],
+                            title,
+                            content,
+                            tags,
+                            updatedAt: new Date().toLocaleDateString()
+                        };
+                    }
+                } else {
+                    // Create new blog
+                    const slug = generateSlug(title);
+                    const newBlog = {
+                        id: slug,
                         title,
                         content,
                         tags,
+                        views: 0,
+                        createdAt: new Date().toLocaleDateString(),
                         updatedAt: new Date().toLocaleDateString()
                     };
+                    blogs.unshift(newBlog);
                 }
-            } else {
-                // Create new blog
-                const slug = generateSlug(title);
-                const newBlog = {
-                    id: slug,
-                    title,
-                    content,
-                    tags,
-                    views: 0,
-                    createdAt: new Date().toLocaleDateString(),
-                    updatedAt: new Date().toLocaleDateString()
-                };
-                blogs.unshift(newBlog);
+                
+                renderBlogs();
+                closeBlogModal();
+                
+                alert('Tutorial saved! Click "Generate Site Files" to create files for upload to GitHub.');
+            } catch (error) {
+                console.error('Error saving blog:', error);
+                alert('There was an error saving the tutorial. Please try again.');
             }
-            
-            renderBlogs();
-            closeBlogModal();
-            
-            alert('Tutorial saved! Click "Generate Site Files" to create files for upload to GitHub.');
         }
 
         function deleteBlog(id) {
@@ -884,6 +908,7 @@
                 blogs = [];
                 renderBlogs();
                 document.getElementById('fileGenerator').style.display = 'none';
+                generatedFiles = [];
                 alert('All tutorials have been deleted.');
             }
         }
@@ -894,50 +919,58 @@
                 return;
             }
 
-            const files = [];
-            
-            // Generate blogs.json
-            const blogsJson = {
-                blogs: blogs,
-                lastUpdated: new Date().toISOString()
-            };
-            files.push({
-                name: 'blogs.json',
-                content: JSON.stringify(blogsJson, null, 2),
-                type: 'application/json'
-            });
+            try {
+                generatedFiles = [];
+                
+                // Generate blogs.json
+                const blogsJson = {
+                    blogs: blogs,
+                    lastUpdated: new Date().toISOString()
+                };
+                generatedFiles.push({
+                    name: 'blogs.json',
+                    content: JSON.stringify(blogsJson, null, 2),
+                    type: 'application/json'
+                });
 
-            // Generate individual blog HTML files
-            blogs.forEach(blog => {
-                const blogHtml = generateBlogHTML(blog);
-                files.push({
-                    name: `${blog.id}.html`,
-                    content: blogHtml,
+                // Generate individual blog HTML files
+                blogs.forEach(blog => {
+                    const blogHtml = generateBlogHTML(blog);
+                    generatedFiles.push({
+                        name: `${blog.id}.html`,
+                        content: blogHtml,
+                        type: 'text/html'
+                    });
+                });
+
+                // Generate updated index.html with current blogs
+                const updatedIndex = generateUpdatedIndexHTML();
+                generatedFiles.push({
+                    name: 'index.html',
+                    content: updatedIndex,
                     type: 'text/html'
                 });
-            });
 
-            // Generate updated index.html with current blogs
-            const updatedIndex = generateUpdatedIndexHTML();
-            files.push({
-                name: 'index.html',
-                content: updatedIndex,
-                type: 'text/html'
-            });
-
-            // Show file generator
-            displayGeneratedFiles(files);
+                // Show file generator
+                displayGeneratedFiles();
+            } catch (error) {
+                console.error('Error generating files:', error);
+                alert('There was an error generating the files. Please try again.');
+            }
         }
 
         function generateBlogHTML(blog) {
+            const escapedTitle = escapeHtml(blog.title);
+            const escapedContent = escapeHtml(blog.content);
+            
             return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${blog.title} - CodeNest</title>
-    <meta name="description" content="${blog.content.substring(0, 160)}...">
-    <meta name="keywords" content="${blog.tags.join(', ')}">
+    <title>${escapedTitle} - CodeNest</title>
+    <meta name="description" content="${escapeHtml(blog.content.substring(0, 160))}...">
+    <meta name="keywords" content="${blog.tags.map(tag => escapeHtml(tag)).join(', ')}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -1091,14 +1124,14 @@
                 <span class="view-count"><i class="fas fa-eye"></i> ${blog.views} views</span>
             </div>
             
-            <h1>${blog.title}</h1>
+            <h1>${escapedTitle}</h1>
             
             <div class="blog-tags">
-                ${blog.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                ${blog.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
             </div>
             
             <div class="blog-content">
-                ${blog.content}
+                ${escapedContent.replace(/\n/g, '<br>')}
             </div>
         </article>
     </div>
@@ -1107,24 +1140,23 @@
         }
 
         function generateUpdatedIndexHTML() {
-            // This would return the current index.html content but with the blogs embedded
-            // For simplicity, we'll return the current page source
+            // Return the current page source
             return document.documentElement.outerHTML;
         }
 
-        function displayGeneratedFiles(files) {
+        function displayGeneratedFiles() {
             const fileGenerator = document.getElementById('fileGenerator');
             const fileList = document.getElementById('fileList');
             
-            fileList.innerHTML = files.map(file => `
+            fileList.innerHTML = generatedFiles.map((file, index) => `
                 <div class="file-item">
                     <div>
-                        <strong>${file.name}</strong>
+                        <strong>${escapeHtml(file.name)}</strong>
                         <div style="font-size: 0.8rem; color: #666;">
                             ${file.type} • ${(new Blob([file.content]).size / 1024).toFixed(1)} KB
                         </div>
                     </div>
-                    <button class="download-btn" onclick="downloadFile('${file.name}', \`${file.content.replace(/`/g, '\\`').replace(/\$/g, '\\)}\`, '${file.type}')">
+                    <button class="download-btn" onclick="downloadFile(${index})">
                         <i class="fas fa-download"></i> Download
                     </button>
                 </div>
@@ -1133,17 +1165,28 @@
             fileGenerator.style.display = 'block';
         }
 
-        function downloadFile(filename, content, type) {
-            const blob = new Blob([content], { type: type });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
+        function downloadFile(index) {
+            try {
+                const file = generatedFiles[index];
+                if (!file) {
+                    console.error('File not found at index:', index);
+                    return;
+                }
+                
+                const blob = new Blob([file.content], { type: file.type });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = file.name;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                console.error('Error downloading file:', error);
+                alert('There was an error downloading the file. Please try again.');
+            }
         }
 
         function closeBlogModal() {
